@@ -1,0 +1,6 @@
+version: 2
+core:
+    - deathMenuLoop.ogg
+ui:
+    - keyChar.ogg
+    - keyError.ogg

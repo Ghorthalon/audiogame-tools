@@ -1,15 +1,14 @@
-import { Game } from '../game';
 import { Scene } from './scene';
 
 export class SceneManager {
 	public scenes: Map<string, Scene>;
-	public currentScene: Scene;
-	public defaultScene: Scene;
+	public currentScene?: Scene;
+	public defaultScene?: Scene;
 	public constructor() {
 		this.scenes = new Map();
 	}
 
-	public init() {
+	public init(): void {
 		if (this.defaultScene) {
 			this.switchTo(this.defaultScene);
 		}

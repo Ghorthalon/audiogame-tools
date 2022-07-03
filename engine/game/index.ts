@@ -1,14 +1,13 @@
 import { AssetManager } from '../asset-manager';
+import { EventBus } from '../event-bus';
 import { Input } from '../input';
 import Resonator from '../resonator';
-import { AssetLoader } from '../resonator/loaders/asset-loader';
-import { Scene } from '../scene/scene';
+import { HTTPLoader } from '../resonator/loaders/http-loader';
 import { SceneManager } from '../scene/manager';
+import { Scene } from '../scene/scene';
 import { Scheduler } from '../scheduler';
 import { TTS } from '../tts';
 import { AriaOutput } from '../tts/outputs/aria';
-import { HTTPLoader } from '../resonator/loaders/http-loader';
-import { EventBus } from '../event-bus';
 import { World } from '../world';
 
 export class Game extends EventBus {
@@ -39,11 +38,11 @@ export class Game extends EventBus {
 	public start() {
 		this.scheduler.start();
 		this.scheduler.subscribe('update.logic', (dt) => {
-			this.sceneManager.currentScene.update(dt);
+			this.sceneManager.currentScene?.update(dt);
 			this.world.update(dt);
 		});
 		this.scheduler.subscribe('update.draw', (dt) =>
-			this.sceneManager.currentScene.updateDraw()
+			this.sceneManager.currentScene?.updateDraw()
 		);
 		this.sceneManager.init();
 	}

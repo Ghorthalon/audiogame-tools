@@ -35,6 +35,37 @@ export class Terrain extends PhysicsObject {
     return this.heightmap[localX * width + localZ];
   }
 
+  public getBoundingBox(bounds: Box): Box {
+    const halfWidth = bounds.size.x / 2;
+    const halfDepth = bounds.size.z / 2;
+    const ax = bounds.position.x + halfWidth;
+    const az = bounds.position.z;
+    const bx = bounds.position.x;
+    const bz = bounds.position.z + halfDepth;
+    const cx = ax;
+    const cz = bounds.position.z + bounds.size.z;
+    const dx = bounds.position.x + bounds.size.x;
+    const dz = bounds.position.z + halfDepth;
+    const heights = [
+      this.getHeightAt(ax, az),
+      this.getHeightAt(bx, bz),
+      this.getHeightAt(cx, cz),
+      this.getHeightAt(dx, dz),
+    ];
+    const boxSize = new vec3([
+      bounds.size.x,
+      Math.max(...heights),
+      bounds.size.z,
+    ]);
+    const boxPos = new vec3([
+      bounds.position.x,
+      this.boundingBox.position.y + Math.min(...heights),
+      bounds.position.z,
+    ]);
+    const box = new Box(boxPos, boxSize);
+    return box;
+  }
+  
   public collidesWith(obj: PhysicsObject): boolean {
     if (!this.boundingBox.overlaps(obj.boundingBox)) {
       return false;
@@ -53,11 +84,25 @@ export class Terrain extends PhysicsObject {
       this.getHeightAt(ax, az),
       this.getHeightAt(bx, bz),
       this.getHeightAt(cx, cz),
-      this.getHeightAt(dx, dz)
+      this.getHeightAt(dx, dz),
     ];
-    const boxSize = new vec3([obj.boundingBox.size.x, Math.max(...heights), obj.boundingBox.size.z]);
-    const boxPos = new vec3([obj.boundingBox.position.x, this.boundingBox.position.y + Math.min(...heights), obj.boundingBox.position.z]);
+    const boxSize = new vec3([
+      obj.boundingBox.size.x,
+      Math.max(...heights),
+      obj.boundingBox.size.z,
+    ]);
+    const boxPos = new vec3([
+      obj.boundingBox.position.x,
+      this.boundingBox.position.y + Math.min(...heights),
+      obj.boundingBox.position.z,
+    ]);
     const box = new Box(boxPos, boxSize);
     return box.overlaps(obj.boundingBox);
+  }
+
+  public onCollision(obj: PhysicsObject): boolean {
+    if (obj.type === ObjectType.terrain) return;
+    // obj.boundingBox.position.y = this.boundingBox.position.y + this.getHeightAt(obj.boundingBox.position.x, obj.boundingBox.position.z);
+    return true;
   }
 }

@@ -2,6 +2,7 @@ import Box from "../math/box";
 import vec3 from "../math/vec3";
 import quat from "../math/quat";
 import { ObjectType } from "./object-type";
+import { World } from "./world";
 
 export class PhysicsObject {
 	public type: ObjectType;
@@ -12,7 +13,7 @@ export class PhysicsObject {
 	public collides: boolean;
 	public isStatic: boolean;
 	public isDirty: boolean;
-
+	public collisionContacts: Set<PhysicsObject>;
 	public constructor() {
 		this.type = ObjectType.object;
 		this.boundingBox = new Box(
@@ -25,6 +26,7 @@ export class PhysicsObject {
 		this.collides = true;
 		this.isStatic = false;
 		this.isDirty = true;
+		this.collisionContacts = new Set();
 	}
 
 	public move(position: vec3) {
@@ -45,5 +47,25 @@ export class PhysicsObject {
 		}
 		return false;
 	}
-}
 
+	public onCollision(obj: PhysicsObject, world: World) {
+		if (!this.collisionContacts.has(obj)) {
+			this.collisionContacts.add(obj);
+			world.emit('collision.enter', [this, obj]);
+		}
+		if (this.isStatic) return;
+		this.velocity.negate();
+		this.boundingBox.position.add(this.velocity.multiply(new vec3([world.deltaTime, world.deltaTime, world.deltaTime])));
+		this.velocity = new vec3([0, 0, 0]);
+		this.checkCollisionContacts();
+		return true;
+	}
+
+	private checkCollisionContacts() {
+		this.collisionContacts.forEach((contact) => {
+			if (!contact.collidesWith(this)) {
+				this.collisionContacts.delete(contact);
+			}
+		})
+	}
+}

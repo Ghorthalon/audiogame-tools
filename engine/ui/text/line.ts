@@ -1,6 +1,6 @@
-import * as EventEmitter from 'eventemitter3';
+import { EventBus } from "../../event-bus";
 
-export class Line extends EventEmitter {
+export class Line extends EventBus {
 	private container: HTMLElement;
 	private textField: HTMLElement;
 	private advanceButton: HTMLElement;

@@ -1,10 +1,10 @@
-import * as EventEmitter from 'eventemitter3';
+import { EventBus } from '../../event-bus';
 import { SoundSet } from '../menu/interfaces/sound-set';
 import { Line } from './line';
 import { SoundManager } from './sound-manager';
 import { KeyboardManager } from './keyboard-manager';
 
-export class ScrollingText extends EventEmitter {
+export class ScrollingText extends EventBus {
 	private currentLineIndex: number;
 	private currentLine: Line;
 	private lines: Line[] = [];
@@ -94,10 +94,10 @@ export class ScrollingText extends EventEmitter {
 				this.appearingCharacters,
 				this.characterAppearSpeed
 			);
-			this.lines[index].on('character.appear', (event) =>
+			this.lines[index].subscribe('character.appear', (event) =>
 				this.emit('character.appear', event)
 			);
-			this.lines[index].on('advance', () => {
+			this.lines[index].subscribe('advance', () => {
 				this.emit('advance');
 				resolve();
 			});

@@ -1,7 +1,7 @@
 // the main module for Resonator
 // API, etc.
 
-import EventEmitter from 'eventemitter3';
+import { EventBus } from '../event-bus';
 import ResonatorAudioContext from './audio-context';
 import ResonatorScene from './scenes/webaudio-scene';
 import AudioGraph from './audio-graph';

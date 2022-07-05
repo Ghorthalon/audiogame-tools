@@ -1,11 +1,11 @@
 // a data pool holds frequently played sounds in memory together with decoded audio data to no longer have to decode them from the cache when loaded again
 
-import EventEmitter from 'eventemitter3';
+import { EventBus } from '../event-bus';
 import DataPoolItem from './data-pool-item';
 import ResonatorAudioContext from './audio-context';
 import { BaseLoader } from './loaders/base-loader';
 import { HTTPLoader } from './loaders/http-loader';
-export default class DataPool extends EventEmitter {
+export default class DataPool extends EventBus {
 	private data: { [path: string]: DataPoolItem } = {};
 	private maxData: number;
 	private context: ResonatorAudioContext;

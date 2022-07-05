@@ -2,10 +2,10 @@
 
 import ResonanceAudio from '../vendor/resonance-es6/main';
 import ResonatorAudioContext from '../audio-context';
-import EventEmitter from 'eventemitter3';
+import { EventBus } from '../../event-bus';
 import vec3 from '../../math/vec3';
 
-export default class Scene extends EventEmitter {
+export default class Scene extends EventBus {
 	scene: any;
 	context: ResonatorAudioContext;
 	listener: AudioListener;

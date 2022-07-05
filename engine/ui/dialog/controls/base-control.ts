@@ -1,6 +1,6 @@
-import { EventEmitter } from "eventemitter3";
+import { EventBus } from "../../../event-bus";
 
-export class BaseControl extends EventEmitter {
+export class BaseControl extends EventBus {
     public constructor() {
         super();
     }

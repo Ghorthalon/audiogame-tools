@@ -15,7 +15,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "eventemitter3": "^4.0.7",
     "yaml": "^1.10.0"
   },
   "devDependencies": {

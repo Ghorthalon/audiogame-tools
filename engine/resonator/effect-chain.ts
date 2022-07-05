@@ -1,6 +1,6 @@
 // A chain of effects that connect to the effect bus
 
-import EventEmitter from 'eventemitter3';
+import { EventBus } from '../event-bus';
 import ResonatorAudioContext from './audio-context';
 import AudioGraph from './audio-graph';
 import BaseEffect from './effects/base-effect';

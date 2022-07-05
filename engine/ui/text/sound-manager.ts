@@ -12,10 +12,10 @@ export class SoundManager {
 	}
 
 	public init(): void {
-		this.instance.on('character.appear', this.handleCharacterAppear.bind(this));
-		this.instance.on('open', this.handleOpen.bind(this));
-		this.instance.on('close', this.handleClose.bind(this));
-		this.instance.on('advance', this.handleAdvance.bind(this));
+		this.instance.subscribe('character.appear', this.handleCharacterAppear.bind(this));
+		this.instance.subscribe('open', this.handleOpen.bind(this));
+		this.instance.subscribe('close', this.handleClose.bind(this));
+		this.instance.subscribe('advance', this.handleAdvance.bind(this));
 	}
 
 	private handleOpen(): void {

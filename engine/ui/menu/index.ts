@@ -1,10 +1,10 @@
 import { BaseItem } from './items/base-item';
 import { SoundSet } from './interfaces/sound-set';
-import * as EventEmitter from 'eventemitter3';
+import { EventBus } from '../../event-bus';
 import { SoundManager } from './sound-manager';
 import { KeyboardManager } from './keyboard-manager';
 
-export class Menu extends EventEmitter {
+export class Menu extends EventBus {
 	private titleContainer: HTMLElement;
 	private currentItem: BaseItem;
 	private currentIndex: number = 0;
@@ -70,9 +70,9 @@ export class Menu extends EventEmitter {
 			this.container.appendChild(this.titleContainer);
 			this.menuItems.forEach((item: BaseItem) => {
 				this.appendToContainer(item.getDOMNode());
-				item.on('update', this.handleItemUpdate.bind(this));
-				item.on('focus', this.onItemFocus.bind(this));
-				item.on('choose', (event) => {
+				item.subscribe('update', this.handleItemUpdate.bind(this));
+				item.subscribe('focus', this.onItemFocus.bind(this));
+				item.subscribe('choose', (event) => {
 					const menuMap = this.compile();
 					this.soundManager.handleSound('choose');
 					this.emit('choose', menuMap);

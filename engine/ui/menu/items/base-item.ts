@@ -1,6 +1,6 @@
-import * as EventEmitter from 'eventemitter3';
+import { EventBus } from "../../../event-bus";
 
-export class BaseItem extends EventEmitter {
+export class BaseItem extends EventBus {
 	protected container: HTMLElement;
 	public constructor(protected id: string, protected title: string) {
 		super();

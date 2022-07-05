@@ -57,7 +57,7 @@ export class AssetManager extends EventBus {
 	}
 
 	public setBasePath(path: string): void {
-		this.basePath = this.basePath;
+		this.basePath = path;
 		this.downloader.setBasePath(this.basePath);
 	}
 

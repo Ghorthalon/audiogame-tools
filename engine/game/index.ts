@@ -9,6 +9,7 @@ import { Scheduler } from '../scheduler';
 import { TTS } from '../tts';
 import { AriaOutput } from '../tts/outputs/aria';
 import { World } from '../world';
+import { GameConfig } from './game-config';
 
 export class Game extends EventBus {
 	public assetLoader: HTTPLoader;
@@ -19,16 +20,18 @@ export class Game extends EventBus {
 	public sceneManager: SceneManager;
 	public scheduler: Scheduler;
 	public world: World;
-	public constructor() {
+	public config: GameConfig;
+	public constructor(config: GameConfig) {
 		super();
+		this.config = config;
 		this.init();
 	}
 
 	public init() {
-		this.assetManager = new AssetManager('game', '');
+		this.assetManager = new AssetManager(this.config.name, this.config.assetDirectory);
 		this.assetLoader = new HTTPLoader();
 		this.resonator = new Resonator(this.assetLoader);
-		this.input = new Input(['keyboard'], document.body);
+		this.input = new Input(this.config.inputTypes, document.body);
 		this.tts = new TTS(new AriaOutput());
 		this.sceneManager = new SceneManager();
 		this.scheduler = new Scheduler(60);

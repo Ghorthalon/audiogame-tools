@@ -34,7 +34,7 @@ export class Game extends EventBus {
 		this.input = new Input(this.config.inputTypes, document.body);
 		this.tts = new TTS(new AriaOutput());
 		this.sceneManager = new SceneManager();
-		this.scheduler = new Scheduler(60);
+		this.scheduler = new Scheduler(this.config.updatesPerSecond);
 		this.emit('ready');
 	}
 

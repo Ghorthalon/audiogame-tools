@@ -28,7 +28,10 @@ export class Game extends EventBus {
 	}
 
 	public init() {
-		this.assetManager = new AssetManager(this.config.name, this.config.assetDirectory);
+		this.assetManager = new AssetManager(
+			this.config.name,
+			this.config.assetDirectory
+		);
 		this.assetLoader = new HTTPLoader();
 		this.resonator = new Resonator(this.assetLoader);
 		this.input = new Input(this.config.inputTypes, document.body);
@@ -42,7 +45,7 @@ export class Game extends EventBus {
 		this.scheduler.start();
 		this.scheduler.subscribe('update.logic', (dt) => {
 			this.sceneManager.currentScene?.update(dt);
-			this.world.update(dt);
+			this.world?.update(dt);
 		});
 		this.scheduler.subscribe('update.draw', (dt) =>
 			this.sceneManager.currentScene?.updateDraw()

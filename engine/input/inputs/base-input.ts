@@ -1,6 +1,7 @@
 export enum InputType {
 	Keyboard = 'keyboard',
-	Mouse = 'mouse'
+	Mouse = 'mouse',
+	Gamepad = 'gamepad'
 }
 
 export abstract class BaseInput {

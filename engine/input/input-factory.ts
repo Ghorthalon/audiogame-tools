@@ -1,16 +1,20 @@
+import { BaseInput, InputType } from './inputs/base-input';
 import { Keyboard } from './inputs/keyboard';
 import { Mouse } from './inputs/mouse';
-import { BaseInput } from './inputs/base-input';
+import { Gamepad } from './inputs/gamepad';
 
 export function createInput(key: string): any {
 	switch (key) {
-		case 'keyboard':
+		case InputType.Keyboard:
 			return Keyboard;
 			break;
-		case 'mouse':
+		case InputType.Mouse:
 			return Mouse;
 			break;
-		default:
+		case InputType.Gamepad:
+			return Gamepad;
 			break;
+		default:
+			throw new Error(`Unknown input type: ${key}`);
 	}
 }

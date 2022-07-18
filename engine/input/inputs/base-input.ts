@@ -1,8 +1,14 @@
-export class BaseInput {
+export enum InputType {
+	Keyboard = 'keyboard',
+	Mouse = 'mouse',
+	Gamepad = 'gamepad'
+}
+
+export abstract class BaseInput {
 	protected active: boolean;
 	public constructor(protected element: HTMLElement) {}
 
-	public getState(): any {}
+	abstract getState(): any;
 
 	public capture(preventDefault: boolean): void {
 		return;

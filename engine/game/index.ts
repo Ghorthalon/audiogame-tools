@@ -44,6 +44,7 @@ export class Game extends EventBus {
 	public start() {
 		this.scheduler.start();
 		this.scheduler.subscribe('update.logic', (dt) => {
+			this.input.cappture();
 			this.sceneManager.currentScene?.update(dt);
 			this.world?.update(dt);
 		});

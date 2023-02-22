@@ -138,4 +138,8 @@ export class StreamingSource implements BaseSource {
 		);
 		setTimeout(() => this.stop(), time * 1000);
 	}
+
+	public isPlaying(): boolean {
+		return this.playing;
+	}
 }

@@ -204,4 +204,8 @@ export default class AudioSource implements BaseSource {
 			this.context.getContext().currentTime + time
 		);
 	}
+
+	public isPlaying(): boolean {
+		return this.playing;
+	}
 }

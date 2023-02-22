@@ -9,4 +9,5 @@ export interface BaseSource {
 	fadeOut(time: number): void;
 	fadeIn(time: number): void;
 	destroy(): void;
+	isPlaying(): boolean;
 }

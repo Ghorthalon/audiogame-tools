@@ -563,7 +563,7 @@ export default class quat {
 	}
 }
 
-function clamp(x, a, b) {
+function clamp(x: number, a: number, b: number) {
 	if (x < a) {
 		return a;
 	} else if (x > b) {

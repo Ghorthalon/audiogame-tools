@@ -390,4 +390,20 @@ export default class vec3 {
     dest.z = value.z + z * rotation.w + (rotation.x * y - rotation.y * x);
     return dest;
   }
+
+  static max(a: vec3, b: vec3): vec3 {
+    return new vec3([
+      Math.max(a.x, b.x),
+      Math.max(a.y, b.y),
+      Math.max(a.z, b.z),
+    ]);
+  }
+
+  static min(a: vec3, b: vec3): vec3 {
+    return new vec3([
+      Math.min(a.x, b.x),
+      Math.min(a.y, b.y),
+      Math.min(a.z, b.z),
+    ]);
+  }
 }

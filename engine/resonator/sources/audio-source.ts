@@ -62,9 +62,9 @@ export default class AudioSource implements BaseSource {
 	}
 
 	play(
-		when: number = 0,
-		offset: number = 0,
-		duration: number = this.buffer ? this.buffer.duration : 0
+		when?: number,
+		offset?: number,
+		duration?: number
 	): void {
 		if (this.playing && this.node) {
 			this.stop();
@@ -80,9 +80,16 @@ export default class AudioSource implements BaseSource {
 		}
 		if (this.node) {
 			this.node.playbackRate.value = this.playbackRate;
-			this.node.start(when, offset, duration);
+			// Have to do this, otherwise when we pass duration, the node will stop before it can loop. 
+			if (duration) {
+				this.node.start(when, offset, duration);
+			} else {
+				this.node.start(when, offset);
+			}
+
 
 			this.node.loop = this.looping;
+			console.log(this.node);
 			this.playing = true;
 			if (this.sceneNode) {
 				this.sceneNode.setPosition(

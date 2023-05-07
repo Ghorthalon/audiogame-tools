@@ -89,7 +89,6 @@ export default class AudioSource implements BaseSource {
 
 
 			this.node.loop = this.looping;
-			console.log(this.node);
 			this.playing = true;
 			if (this.sceneNode) {
 				this.sceneNode.setPosition(

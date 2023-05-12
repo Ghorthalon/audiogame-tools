@@ -71,6 +71,7 @@ export default class AudioSource implements BaseSource {
 		}
 		if (!this.buffer) {
 			this.playOnLoad = true;
+			this.playing = true;
 			return;
 		}
 		if (!this.node) {

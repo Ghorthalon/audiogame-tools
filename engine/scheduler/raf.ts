@@ -2,6 +2,8 @@ import { SchedulerNode } from './node';
 
 export class RAFTimer {
 	public isStarted: boolean;
+	private lastTime: number = 0;
+	private currTime: number = 0;
 	public node: SchedulerNode;
 	public constructor(node: SchedulerNode) {
 		this.isStarted = false;
@@ -21,9 +23,16 @@ export class RAFTimer {
 		window.requestAnimationFrame(this.handleResolve.bind(this));
 	}
 
-	public handleResolve() {
+	public handleResolve(dt: number) {
 		if (this.node) {
-			this.node.func(1);
+			if (!this.lastTime) {
+				this.lastTime = dt;
+				this.node.func(1);
+			} else {
+				const delta = dt - this.lastTime;
+				this.lastTime = dt;
+				this.node.func(delta / 1000);
+			}
 			if (this.isStarted) {
 				this.schedule();
 			}

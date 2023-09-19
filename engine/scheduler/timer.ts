@@ -7,43 +7,42 @@ export class Timer {
 	public node: SchedulerNode;
 	public isStarted: boolean;
 	public intervalID: number;
+
 	public constructor(time: number, node: SchedulerNode) {
 		this.time = time;
 		this.node = node;
 		this.isStarted = false;
+		this.fluctuation = 0;
 	}
 
 	public start() {
 		this.isStarted = true;
+		this.lastTime = performance.now();
 		this.schedule();
 	}
 
 	public stop() {
 		if (this.isStarted) {
-			if (this.intervalID) {
-				clearTimeout(this.intervalID);
-				this.intervalID = null;
-				this.isStarted = false;
-			}
+			clearTimeout(this.intervalID);
+			this.isStarted = false;
 		}
 	}
 
 	public schedule() {
-		let toWait = this.time;
-		if (this.lastTime) {
-			const fluc = Date.now() - this.lastTime;
-			this.fluctuation = fluc;
-			toWait -= fluc;
-		}
-		this.lastTime = Date.now();
-		this.intervalID = <any>setTimeout(this.handleResolve.bind(this), toWait);
+		const now = performance.now();
+		const elapsed = now - this.lastTime;
+		this.fluctuation = elapsed - this.time;
+		this.lastTime = now;
+
+		const toWait = Math.max(0, this.time - this.fluctuation);
+		this.intervalID = window.setTimeout(() => this.handleResolve(elapsed), toWait);
 	}
 
-	public handleResolve() {
-		this.lastTime = Date.now();
+	public handleResolve(dt: number) {
 		if (this.node) {
-			this.node.func(this.time / this.lastTime);
+			this.node.func(dt / 1000); // Assuming time is in milliseconds
 		}
+
 		if (this.isStarted) {
 			this.schedule();
 		}

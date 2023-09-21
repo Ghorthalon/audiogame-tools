@@ -22,6 +22,7 @@ export default class AudioSource implements BaseSource {
 	private volume: number;
 	private gain: GainNode;
 	private type: SourceType;
+	
 	constructor(
 		graph: AudioGraph,
 		scene: ResonatorScene,

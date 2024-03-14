@@ -1,6 +1,5 @@
 // The code that deals with 3d audio
 
-import ResonanceAudio from '../vendor/resonance-es6/main';
 import ResonatorAudioContext from '../audio-context';
 import { EventBus } from '../../event-bus';
 import vec3 from '../../math/vec3';

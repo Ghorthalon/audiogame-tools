@@ -237,6 +237,32 @@ export default class vec3 {
     return dest;
   }
 
+  rotateAroundAxis(axis: vec3, angle: number): vec3 {
+    const normalizedAxis = axis.normalize();
+    const sinAngle = Math.sin(angle / 2);
+    const cosAngle = Math.cos(angle / 2);
+
+    // Create a quaternion representing the rotation
+    const rotationQuat = new quat([
+      normalizedAxis.x * sinAngle,
+      normalizedAxis.y * sinAngle,
+      normalizedAxis.z * sinAngle,
+      cosAngle
+    ]);
+
+    // Quaternion for the vector (considering the vector as a quaternion with a w value of 0)
+    const vecQuat = new quat([this.x, this.y, this.z, 0]);
+
+    // Conjugate of the rotation quaternion
+    const rotationQuatConjugate = rotationQuat.conjugate();
+
+    // Rotate the vector using quaternion multiplication: q * v * q^(-1)
+    const rotatedVecQuat = rotationQuat.multiply(vecQuat).multiply(rotationQuatConjugate);
+
+    // Return the rotated vector
+    return new vec3([rotatedVecQuat.x, rotatedVecQuat.y, rotatedVecQuat.z]);
+  }
+
   static cross(vector: vec3, vector2: vec3, dest?: vec3): vec3 {
     if (!dest) {
       dest = new vec3();

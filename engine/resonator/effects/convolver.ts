@@ -10,6 +10,7 @@ export default class Convolver extends BaseEffect {
 		super(context, graph, params);
 		console.log(`Creating convolver`);
 		this.effectNode = this.context.getContext().createConvolver();
+		this.effectNode.normalize = false;
 		this.effectNode.buffer = this.effectParams.buffer;
 	}
 

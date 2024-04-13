@@ -11,7 +11,7 @@ export default class Convolver extends BaseEffect {
 		super(context, graph, params);
 		console.log(`Creating convolver`);
 		this.effectNode = this.context.getContext().createConvolver();
-		this.effectNode.normalize = false;
+		this.effectNode.normalize = true;
 		this.effectNode.buffer = this.effectParams.buffer;
 	}
 
@@ -23,7 +23,7 @@ export default class Convolver extends BaseEffect {
 		this.channelSplitter.connect(this.channelMerger, 0, 1);
 		this.channelSplitter.connect(this.channelMerger, 1, 1);
 		this.outputGain = this.context.getContext().createGain();
-		this.outputGain.gain.setValueAtTime(0.5, this.context.getContext().currentTime);
+		this.outputGain.gain.setValueAtTime(0.25, this.context.getContext().currentTime);
 		node.connect(this.channelSplitter);
 		this.channelMerger.connect(this.outputGain);
 		this.outputGain.connect(this.effectNode);

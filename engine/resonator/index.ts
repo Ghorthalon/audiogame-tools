@@ -80,7 +80,7 @@ export default class Resonator {
 		if (this.environmentImpulse) {
 			this.graph.removeEffect(this.environmentImpulse);
 		}
-		if (file === null) {
+		if (file === null || file === '') {
 			return;
 		}
 		const buffer = await this.dataPool.get(file);

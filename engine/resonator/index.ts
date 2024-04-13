@@ -76,7 +76,7 @@ export default class Resonator {
 		return new AudioSource(this.graph, this.scene, this.context, data);
 	}
 
-	async setEnvironmentImpulse(file: string) {
+	async setEnvironmentImpulse(file: string, volume: number = 0.25) {
 		if (this.environmentImpulse) {
 			this.graph.removeEffect(this.environmentImpulse);
 		}
@@ -87,6 +87,7 @@ export default class Resonator {
 		this.environmentImpulse = new Convolver(this.context, this.graph, {
 			buffer
 		});
+		(this.environmentImpulse as Convolver).setVolume(volume);
 		this.graph.applyEffect(this.environmentImpulse);
 	}
 

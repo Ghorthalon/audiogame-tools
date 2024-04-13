@@ -5,6 +5,7 @@ import ResonatorAudioContext from '../audio-context';
 import AudioGraph from '../audio-graph';
 import ResonatorScene from '../scenes/webaudio-scene';
 import { BaseSource } from './base-source';
+import { DistanceModel } from './distance-model';
 import { SourceType } from './source-type';
 
 export default class AudioSource implements BaseSource {
@@ -22,6 +23,11 @@ export default class AudioSource implements BaseSource {
 	private volume: number;
 	private gain: GainNode;
 	private type: SourceType;
+	private distanceModel: DistanceModel;
+	private maxDistance: number;
+	private refDistance: number;
+	private rollOffFactor: number;
+
 	
 	constructor(
 		graph: AudioGraph,
@@ -135,6 +141,7 @@ export default class AudioSource implements BaseSource {
 			case SourceType.WorldSource:
 				if (!this.sceneNode) {
 					this.sceneNode = this.scene.createSource();
+					this.updateSpatialization();
 				}
 				this.node.connect(this.gain);
 				this.gain.connect(this.sceneNode);
@@ -215,5 +222,34 @@ export default class AudioSource implements BaseSource {
 
 	public isPlaying(): boolean {
 		return this.playing;
+	}
+
+	public setDistanceModel(distanceModel: DistanceModel) {
+		this.distanceModel = distanceModel;
+		this.updateSpatialization();
+	}
+
+	public setMaxDistance(distance: number) {
+		this.maxDistance = this.maxDistance;
+		this.updateSpatialization();
+	}
+
+	public setRefDistance(ref: number) {
+		this.refDistance = ref;
+		this.updateSpatialization();
+	}
+
+	public setRollOffFactor(factor: number) {
+		this.rollOffFactor = factor;
+		this.updateSpatialization();
+	}
+
+	public updateSpatialization() {
+		if (this.sceneNode) {
+			if (this.distanceModel) this.sceneNode.distanceModel = this.distanceModel;
+			if (this.refDistance) this.sceneNode.refDistance = this.refDistance;
+			if (this.rollOffFactor) this.sceneNode.rolloffFactor = this.rollOffFactor;
+			if (this.maxDistance) this.sceneNode.maxDistance = this.maxDistance;
+		}
 	}
 }

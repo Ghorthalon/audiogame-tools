@@ -79,6 +79,7 @@ export default class Resonator {
 	async setEnvironmentImpulse(file: string, volume: number = 0.25) {
 		if (this.environmentImpulse) {
 			this.graph.removeEffect(this.environmentImpulse);
+			this.environmentImpulse = null;
 		}
 		if (file === null || file === '') {
 			return;

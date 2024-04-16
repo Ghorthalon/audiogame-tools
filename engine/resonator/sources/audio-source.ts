@@ -27,7 +27,8 @@ export default class AudioSource implements BaseSource {
 	private maxDistance: number;
 	private refDistance: number;
 	private rollOffFactor: number;
-
+	private filter: BiquadFilterNode;
+	private filterFreq: number = 24000;
 	
 	constructor(
 		graph: AudioGraph,
@@ -53,6 +54,11 @@ export default class AudioSource implements BaseSource {
 
 	init(): void {
 		this.gain = this.context.createGain();
+		this.filter = this.context.getContext().createBiquadFilter();
+		this.filter.type = "highshelf";
+		this.filter.frequency.value = this.filterFreq;
+		this.filter.gain.value = -60;
+
 		// bind methods so we can add and removve them from event listeners
 		this.stop = this.stop.bind(this);
 	}
@@ -73,6 +79,7 @@ export default class AudioSource implements BaseSource {
 		offset?: number,
 		duration?: number
 	): void {
+		if (!this.context) return;
 		if (this.playing && this.node) {
 			this.stop();
 		}
@@ -143,7 +150,9 @@ export default class AudioSource implements BaseSource {
 					this.sceneNode = this.scene.createSource();
 					this.updateSpatialization();
 				}
-				this.node.connect(this.gain);
+
+				this.node.connect(this.filter);
+				this.filter.connect(this.gain);
 				this.gain.connect(this.sceneNode);
 
 				break;
@@ -250,6 +259,13 @@ export default class AudioSource implements BaseSource {
 			if (this.refDistance) this.sceneNode.refDistance = this.refDistance;
 			if (this.rollOffFactor) this.sceneNode.rolloffFactor = this.rollOffFactor;
 			if (this.maxDistance) this.sceneNode.maxDistance = this.maxDistance;
+		}
+	}
+
+	public setFilterFrequency(value: number) {
+		this.filterFreq = value;
+		if (this.filter) {
+			this.filter.frequency.value = this.filterFreq;
 		}
 	}
 }

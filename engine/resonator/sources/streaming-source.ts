@@ -17,6 +17,8 @@ export class StreamingSource implements BaseSource {
 	private maxDistance: number;
 	private refDistance: number;
 	private rollOffFactor: number;
+	private filter: BiquadFilterNode;
+	private filterFreq: number = 24000;
 
 	public constructor(
 		private graph: AudioGraph,
@@ -35,6 +37,10 @@ export class StreamingSource implements BaseSource {
 
 	private init(): void {
 		this.node = this.context.createMediaElementSource(this.element);
+		this.filter = this.context.getContext().createBiquadFilter();
+		this.filter.type = "lowshelf";
+		this.filter.gain.value = -60;
+		this.filter.frequency.value = this.filterFreq;
 		this.gain = this.context.createGain();
 		this.createConnections();
 		this.element.addEventListener('canplay', (event) => {
@@ -83,7 +89,8 @@ export class StreamingSource implements BaseSource {
 					this.sceneNode = this.scene.createSource();
 					this.updateSpatialization();
 				}
-				this.node.connect(this.gain);
+				this.node.connect(this.filter);
+				this.filter.connect(this.gain);
 				this.gain.connect(this.sceneNode);
 
 				break;
@@ -176,6 +183,13 @@ export class StreamingSource implements BaseSource {
 			this.sceneNode.refDistance = this.refDistance;
 			this.sceneNode.rolloffFactor = this.rollOffFactor;
 			this.sceneNode.maxDistance = this.maxDistance;
+		}
+	}
+
+	public setFilterFrequency(value: number) {
+		this.filterFreq = value;
+		if (this.filter) {
+			this.filter.frequency.value = this.filterFreq;
 		}
 	}
 }

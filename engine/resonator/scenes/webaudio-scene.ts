@@ -47,7 +47,10 @@ export default class ResonatorScene extends EventBus {
 
 	setListenerPosition(x: number, y: number, z: number): void {
 		if (x === this.position.x && y === this.position.y && z == this.position.z) return;
-		this.listener.setPosition(x, y, z);
+		// this.listener.setPosition(x, y, z);
+		this.listener.positionX.setValueAtTime(x, this.context.getContext().currentTime);
+		this.listener.positionY.setValueAtTime(y, this.context.getContext().currentTime);
+		this.listener.positionZ.setValueAtTime(z, this.context.getContext().currentTime);
 		this.position = {x, y, z};
 	}
 
@@ -61,7 +64,13 @@ export default class ResonatorScene extends EventBus {
 		up.normalize();
 
 		if (fwd.x === this.orientation.fwd.x && fwd.y === this.orientation.fwd.y && fwd.z === this.orientation.fwd.z && up.x === this.orientation.up.x && up.y === this.orientation.up.y && up.z === this.orientation.up.z) return;
-		this.listener.setOrientation(fwd.x, fwd.y, fwd.z, up.x, up.y, up.z);
+		// this.listener.setOrientation(fwd.x, fwd.y, fwd.z, up.x, up.y, up.z);
+		this.listener.forwardX.setValueAtTime(fwd.x, this.context.getContext().currentTime);
+		this.listener.forwardY.setValueAtTime(fwd.y, this.context.getContext().currentTime);
+		this.listener.forwardZ.setValueAtTime(fwd.z, this.context.getContext().currentTime);
+		this.listener.upX.setValueAtTime(up.x, this.context.getContext().currentTime);
+		this.listener.upY.setValueAtTime(up.y, this.context.getContext().currentTime);
+		this.listener.upZ.setValueAtTime(up.z, this.context.getContext().currentTime);
 		this.orientation = {fwd, up};
 	}
 }

@@ -8,11 +8,18 @@ export default class ResonatorScene extends EventBus {
 	scene: GainNode;
 	context: ResonatorAudioContext;
 	listener: AudioListener;
+	position: {x: number, y: number, z: number} = {x: 0, y: 0, z: 0};
+	orientation: any;
 	constructor(context: ResonatorAudioContext) {
 		super();
 		this.context = context;
 		this.scene = this.context.getContext().createGain();
 		this.listener = this.context.getContext().listener;
+		this.position = {x: 0, y: 0, z: 0};
+		this.orientation = {
+			up: {x: 0, y: 1, z: 0},
+			fwd: {x: 0, y: 0, z: -1}
+		}
 		this.init();
 	}
 
@@ -39,7 +46,9 @@ export default class ResonatorScene extends EventBus {
 	}
 
 	setListenerPosition(x: number, y: number, z: number): void {
+		if (x === this.position.x && y === this.position.y && z == this.position.z) return;
 		this.listener.setPosition(x, y, z);
+		this.position = {x, y, z};
 	}
 
 	setListenerOrientation(forward: any, rawup: any) {
@@ -51,6 +60,8 @@ export default class ResonatorScene extends EventBus {
 		fwd.normalize();
 		up.normalize();
 
+		if (fwd.x === this.orientation.fwd.x && fwd.y === this.orientation.fwd.y && fwd.z === this.orientation.fwd.z && up.x === this.orientation.up.x && up.y === this.orientation.up.y && up.z === this.orientation.up.z) return;
 		this.listener.setOrientation(fwd.x, fwd.y, fwd.z, up.x, up.y, up.z);
+		this.orientation = {fwd, up};
 	}
 }

@@ -117,6 +117,7 @@ export default class AudioSource implements BaseSource {
 	}
 
 	setPosition(x: number, y: number, z: number): void {
+		if (x === this.position.x && y === this.position.y && z === this.position.z) return;
 		this.position = {
 			x,
 			y,

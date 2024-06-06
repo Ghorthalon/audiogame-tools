@@ -16,6 +16,13 @@ export default class Convolver extends BaseEffect {
 		this.effectNode.buffer = this.effectParams.buffer;
 	}
 
+	setBuffer(buffer: AudioBuffer) {
+		this.buffer = buffer;
+		if (this.effectNode) {
+			this.effectNode.buffer = buffer;
+		}
+	}
+	
 	setVolume(volume: number) {
 		this.volume = volume;
 		if (this.outputGain) {

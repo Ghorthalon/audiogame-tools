@@ -77,13 +77,19 @@ export default class Resonator {
 	}
 
 	async setEnvironmentImpulse(file: string, volume: number = 0.25) {
-		if (this.environmentImpulse) {
-			this.graph.removeEffect(this.environmentImpulse);
-			this.environmentImpulse = null;
-		}
 		if (file === null || file === '') {
+			if (this.environmentImpulse) {
+				this.graph.removeEffect(this.environmentImpulse);
+				this.environmentImpulse = null;
+			}
 			return;
 		}
+		if (this.environmentImpulse && file !== '') {
+			const buffer = await this.dataPool.get(file);
+			(this.environmentImpulse as Convolver).setBuffer(buffer);
+			(this.environmentImpulse as Convolver).setVolume(volume);
+		}
+
 		const buffer = await this.dataPool.get(file);
 		this.environmentImpulse = new Convolver(this.context, this.graph, {
 			buffer

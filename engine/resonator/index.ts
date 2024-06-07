@@ -88,6 +88,7 @@ export default class Resonator {
 			const buffer = await this.dataPool.get(file);
 			(this.environmentImpulse as Convolver).setBuffer(buffer);
 			(this.environmentImpulse as Convolver).setVolume(volume);
+			return;
 		}
 
 		const buffer = await this.dataPool.get(file);

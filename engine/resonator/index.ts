@@ -99,6 +99,28 @@ export default class Resonator {
 		this.graph.applyEffect(this.environmentImpulse);
 	}
 
+	async setEnvironmentImpulseBuffer(file: AudioBuffer, volume: number = 0.25) {
+		if (file === null) {
+			if (this.environmentImpulse) {
+				this.graph.removeEffect(this.environmentImpulse);
+				this.environmentImpulse = null;
+			}
+			return;
+		}
+		if (this.environmentImpulse && file) {
+			(this.environmentImpulse as Convolver).setBuffer(file);
+			(this.environmentImpulse as Convolver).setVolume(volume);
+			return;
+		}
+
+	
+		this.environmentImpulse = new Convolver(this.context, this.graph, {
+			buffer: file
+		});
+		(this.environmentImpulse as Convolver).setVolume(volume);
+		this.graph.applyEffect(this.environmentImpulse);
+	}
+
 	setListenerPosition(x: number, y: number, z: number): void {
 		this.scene.setListenerPosition(x, y, z);
 	}
@@ -109,5 +131,9 @@ export default class Resonator {
 
 	clearDataPool(): void {
 		this.dataPool.clear();
+	}
+
+	getAudioContext() {
+		return this.context.getContext();
 	}
 }

@@ -24,7 +24,12 @@ export default class ResonatorAudioContext {
 	}
 
 	async decodeAudioData(data: ArrayBuffer): Promise<AudioBuffer> {
-		return await this.context.decodeAudioData(data);
+		try {
+			return await this.context.decodeAudioData(data);
+		} catch (e) {
+			console.error(e);
+		}
+
 	}
 
 	createPanner(): any {

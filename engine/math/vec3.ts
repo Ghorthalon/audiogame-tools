@@ -432,4 +432,12 @@ export default class vec3 {
       Math.min(a.z, b.z),
     ]);
   }
+
+  static lerp(a: vec3, b: vec3, t: number): vec3 {
+    return new vec3([
+      a.x + (b.x - a.x) * t,
+      a.y + (b.y - a.y) * t,
+      a.z + (b.z - a.z) * t,
+    ]);
+  }
 }

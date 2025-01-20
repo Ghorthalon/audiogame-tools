@@ -136,4 +136,14 @@ export default class Resonator {
 	getAudioContext() {
 		return this.context.getContext();
 	}
+
+	public getAudioGraph() {
+		return this.graph;
+	}
+
+	public getScene() {
+		return this.scene;
+	}
+
+
 }

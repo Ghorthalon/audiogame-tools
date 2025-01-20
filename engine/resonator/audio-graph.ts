@@ -11,8 +11,8 @@ import EffectChain from './effect-chain';
 export default class AudioGraph {
 	private master: any;
 	private effectsBus: AudioNode;
-	private worldBus: AudioNode;
-	private secondaryBus: AudioNode;
+	public worldBus: AudioNode;
+	public secondaryBus: AudioNode;
 	private effects: EffectChain;
 	private scene: ResonatorScene;
 	private context: ResonatorAudioContext;
